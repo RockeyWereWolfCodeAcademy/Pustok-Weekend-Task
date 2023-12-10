@@ -1,0 +1,166 @@
+﻿﻿@using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminHomeVM;
+@model AdminHomeListVM
+
+@{
+    ViewData["Title"] = "Admin Home";
+}
+
+@section styles{
+    <!-- Custom styles for this page -->
+    <link href="~/admin/assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+
+@section scripts{
+    <!-- Page level plugins -->
+    <script src="~/admin/assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/admin/assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    @* <script src="~/admin/assets/js/demo/datatables-demo.js"></script> *@
+    @if (TempData["Response"] != null)
+    {
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @if ((string)TempData["Response"] == "updated" || (string)TempData["Response"] == "deleted" || (string)TempData["Response"] == "created")
+        {
+            <script>
+                Swal.fire({
+                    title: "Good job!",
+                    text: "Data @TempData["Response"]",
+                    icon: "success"
+                });
+            </script>
+        }
+        else
+        {
+            <script>
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!",
+                });
+            </script>
+        }
+    }
+    
+
+}
+
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="mb-0">
+            <a data-toggle="collapse" href="#SlidersCollapse" aria-expanded="true" aria-controls="SlidersCollapse">
+                <p class="m-0 font-weight-bold text-primary">Sliders</p>
+            </a>
+        </h6>
+        @* <a class="btn" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"> *@
+    </div>
+    <div class="collapse multi-collapse" id="SlidersCollapse">
+        <div class="card-body">
+            <a class="btn btn-outline-success" asp-action="Create" asp-controller="AdminSlider">Create</a>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Tittle</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Image</th>
+                            <th>Position</th>
+                            <th colspan="2" style="text-align: center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Sliders.Count() != 0)
+                        {
+                            @foreach (var slider in Model.Sliders)
+                            {
+                                <tr>
+                                    <td>@slider.Id</td>
+                                    <td>@slider.Title</td>
+                                    <td>@slider.Description</td>
+                                    <td>@slider.Price</td>
+                                    <td><img src="@slider.ImgUrl" width="250px" height="250px" /></td>
+                                    <td>@(slider.IsLeft == true ? "Image on left" : "image on right")</td>
+                                    <td><a class="btn btn-outline-info" asp-action="Update" asp-controller="AdminSlider" asp-route-id="@slider.Id">Update</a></td>
+                                    <td><a class="btn btn-outline-danger" asp-action="Delete" asp-controller="AdminSlider" asp-route-id="@slider.Id">Delete</a></td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr align="center">
+                                <td colspan="8">NO DATA</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="mb-0">
+            <a data-toggle="collapse" href="#ProductsCollapse" aria-expanded="true" aria-controls="ProductsCollapse">
+                <p class="m-0 font-weight-bold text-primary">Products</p>
+            </a>
+        </h6>
+        @* <a class="btn" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"> *@
+    </div>
+    <div class="collapse multi-collapse" id="ProductsCollapse">
+        <div class="card-body">
+            <a class="btn btn-outline-success" asp-action="Create" asp-controller="AdminProduct">Create</a>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Active Image</th>
+                            <th>ExTax</th>
+                            <th>Is Available</th>
+                            <th>Actual Price</th>
+                            <th>Sell Price</th>
+                            <th>Discount</th>
+                            <th>Category</th>
+                            <th>Author</th>
+                            <th colspan="2" style="text-align: center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Products.Count() != 0)
+                        {
+                            @foreach (var product in Model.Products)
+                            {
+                                <tr>
+                                    <td>@product.Id</td>
+                                    <td>@product.Name</td>
+                                    <td><img src="@product.ActiveImageUrl" width="250px" height="250px" /></td>
+                                    <td>@product.ExTax</td>
+                                    <td>@(product.IsAvailable == true ? "yes" : "no")</td>
+                                    <td>@product.ActualPrice</td>
+                                    <td>@product.SellPrice</td>
+                                    <td>@product.Discount</td>
+                                    <td>@product.CategoryName</td>
+                                    <td>@product.AuthorFullName</td>
+                                    <td><a class="btn btn-outline-info" asp-action="Update" asp-controller="AdminProduct" asp-route-id="@product.Id">Update</a></td>
+                                    <td><a class="btn btn-outline-danger" asp-action="Delete" asp-controller="AdminProduct" asp-route-id="@product.Id">Delete</a></td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr align="center">
+                                <td colspan="8">NO DATA</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

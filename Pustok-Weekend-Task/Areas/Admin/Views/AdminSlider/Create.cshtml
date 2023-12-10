@@ -1,0 +1,44 @@
+﻿@using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminSliderVM;
+@{
+    ViewData["Title"] = "Create Slider";
+}
+
+@model AdminSliderCreateVM
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"] </h6>
+    </div>
+    <div class="card-body">
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Title" class="form-label">Title</label>
+                <input asp-for="Title" class="form-control">
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="form-label">Price</label>
+                <input asp-for="Price" class="form-control">
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImgFile">Image</label>
+                <input asp-for="ImgFile" accept="image/*">
+                <span asp-validation-for="ImgFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="left">Image on right</label>
+                <input asp-for="IsLeft" type="radio" value="false" id="left">
+                <label for="right">Image on left</label>
+                <input asp-for="IsLeft" type="radio" value="true" id="right">
+                <span asp-validation-for="IsLeft" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
