@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminAuthorVM;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminSliderVM;
 using Pustok_Weekend_Task.Contexts;
 using Pustok_Weekend_Task.Helpers;
@@ -7,10 +9,10 @@ using Pustok_Weekend_Task.Models;
 namespace Pustok_Weekend_Task.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class AdminSliderController : Controller
+    public class AdminAuthorController : Controller
     {
         PustokDbContext _context { get; }
-        public AdminSliderController(PustokDbContext context)
+        public AdminAuthorController(PustokDbContext context)
         {
             _context = context;
         }
@@ -23,33 +25,19 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(AdminSliderCreateVM sliderVM)
+        public async Task<IActionResult> Create(AdminAuthorCreateVM authorVM)
         {
             TempData["Response"] = "temp";
-            if (sliderVM.ImgFile != null)
+            if (!ModelState.IsValid)
             {
-                if (!sliderVM.ImgFile.IsImageType())
-                {
-                    ModelState.AddModelError("ImgFile", "File must be image");
-                }
-                if (!sliderVM.ImgFile.IsValidSize(1000))
-                {
-                    ModelState.AddModelError("ImgFile", "File cant be larger than 1 mb");
-                }
+                return View(authorVM);
             }
-            if (!ModelState.IsValid) 
+            Author author = new Author
             {
-                return View(sliderVM);
-            }
-            Slider slider = new Slider
-            {
-                Title = sliderVM.Title,
-                Description = sliderVM.Description,
-                Price = sliderVM.Price,
-                IsLeft = sliderVM.IsLeft,
-                ImgUrl = await sliderVM.ImgFile.SaveAsync(PathConstants.SliderImage)
+                Name = authorVM.Name,
+                Surname = authorVM.Surname,
             };
-            await _context.Sliders.AddAsync(slider);
+            await _context.Authors.AddAsync(author);
             await _context.SaveChangesAsync();
             TempData["Response"] = "created";
             return RedirectToAction(nameof(Index), "AdminHome");
@@ -57,17 +45,10 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             TempData["Response"] = "temp";
-            if (id == null)
-            {
-                return BadRequest();
-            }
-            var data = await _context.Sliders.FindAsync(id);
-            if (data  == null)
-            {
-                return NotFound();
-            }
-            System.IO.File.Delete(Path.Combine(PathConstants.RootPath, data.ImgUrl));
-            _context.Sliders.Remove(data);
+            if (id == null) return BadRequest();
+            var data = await _context.Authors.FindAsync(id);
+            if (data == null) return NotFound();
+            _context.Authors.Remove(data);
             await _context.SaveChangesAsync();
             TempData["Response"] = "deleted";
             return RedirectToAction(nameof(Index), "AdminHome");
@@ -75,9 +56,9 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
         public async Task<IActionResult> Update(int? id)
         {
             if (id == null) return BadRequest();
-            var data = await _context.Sliders.FindAsync(id);
+            var data = await _context.Authors.FindAsync(id);
             if (data == null) return NotFound();
-            return View(new AdminSliderUpdateVM
+            return View(new AdminAuthorUpdateVM
             {
                 Title = data.Title,
                 Description = data.Description,

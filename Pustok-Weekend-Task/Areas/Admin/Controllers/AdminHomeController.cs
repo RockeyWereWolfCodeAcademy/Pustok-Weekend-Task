@@ -60,7 +60,7 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
             {
                 Id = category.Id,
                 Name = category.Name,
-                ParentName = _context.Categories.Find(category.ParentCategoryId).Name
+                ParentName = _context.Categories.First(x=> x.Id == category.ParentCategoryId).Name
             }).ToListAsync();
             return View(models);
         }

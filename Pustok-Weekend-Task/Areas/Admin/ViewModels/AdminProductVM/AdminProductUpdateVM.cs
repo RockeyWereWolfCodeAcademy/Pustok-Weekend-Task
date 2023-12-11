@@ -1,10 +1,8 @@
-﻿using Pustok_Weekend_Task.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminProductVM
 {
-    public class AdminProductCreateVM
+    public class AdminProductUpdateVM
     {
         [MaxLength(16)]
         public string Name { get; set; }
@@ -16,7 +14,7 @@ namespace Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminProductVM
         public decimal ExTax { get; set; }
         public bool IsAvailable { get; set; }
         public decimal ActualPrice { get; set; }
-        [Range(0,100)]
+        [Range(0, 100)]
         public float Discount { get; set; }
         public decimal SellPrice { get; set; }
         public IFormFile ActiveImg { get; set; }

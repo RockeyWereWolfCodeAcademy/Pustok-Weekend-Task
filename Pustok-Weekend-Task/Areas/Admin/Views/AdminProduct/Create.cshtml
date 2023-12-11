@@ -1,0 +1,95 @@
+﻿@using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminProductVM;
+@{
+    ViewData["Title"] = "Create Product";
+}
+
+@model AdminProductCreateVM
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"] </h6>
+    </div>
+    <div class="card-body">
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Name" class="form-label">Title</label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="About" class="form-label">About</label>
+                <textarea asp-for="About" class="form-control"></textarea>
+                <span asp-validation-for="About" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductCode" class="form-label">Product Code</label>
+                <input asp-for="ProductCode" class="form-control">
+                <span asp-validation-for="ProductCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExTax" class="form-label">ExTax</label>
+                <input asp-for="ExTax" class="form-control">
+                <span asp-validation-for="ExTax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="no">Not Available</label>
+                <input asp-for="IsAvailable" type='radio' value="false" id="no" />
+                <label for="yes">Available</label>
+                <input asp-for="IsAvailable" type='radio' value="true" id="yes" />
+                <span asp-validation-for="IsAvailable" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualPrice" class="form-label">Real Price</label>
+                <input asp-for="ActualPrice" class="form-control">
+                <span asp-validation-for="ActualPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SellPrice" class="form-label">Sell price</label>
+                <input asp-for="SellPrice" class="form-control">
+                <span asp-validation-for="SellPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Discount" class="form-label">Discount</label>
+                <input asp-for="Discount" class="form-control">
+                <span asp-validation-for="Discount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActiveImg">Main Image</label>
+                <input asp-for="ActiveImg" accept="image/*">
+                <span asp-validation-for="ActiveImg" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Images">Images</label>
+                <input asp-for="Images" accept="image/*">
+                <span asp-validation-for="Images" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AuthorId">Author</label>
+                <select class="form-control" asp-for="AuthorId" asp-items='@new SelectList(ViewBag.Authors, "Id", "Name" + " Surname")'>
+                    <option disabled selected>Select Author</option>
+                </select>
+                <span asp-validation-for="AuthorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId">Category</label>
+                <select class="form-control" asp-for="CategoryId" asp-items='@new SelectList(ViewBag.Categories, "Id", "Name")'>
+                    <option disabled selected>Select Category</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TagIds">Tags</label>
+                <select class="form-control" asp-for="TagIds" asp-items='@new SelectList(ViewBag.Tags, "Id", "Name")'>
+                    <option disabled selected>Select Tags</option>
+                </select>
+                <span asp-validation-for="TagIds" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
