@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Update Category";
+}
+
+@model AdminTagUpdateVM
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"] </h6>
+    </div>
+    <div class="card-body">
+        <form action="" method="post">
+            <div class="form-group">
+                <label asp-for="Name" class="form-label">Title</label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>

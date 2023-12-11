@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminProductVM;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminSliderVM;
 using Pustok_Weekend_Task.Contexts;
@@ -47,12 +48,16 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
             }
             if (productVM.TagIds != null)
             {
-                foreach (var tagId in productVM.TagIds)
+                //foreach (var tagId in productVM.TagIds)
+                //{
+                //    if (await _context.Tags.Where(tag => tag.Id == tagId).Select(tag => tag.Id).CountAsync() != productVM.TagIds.Count())
+                //    {
+                //        ModelState.AddModelError("TagIds", "one of tags doesnt exist!");
+                //    }
+                //}
+                if (await _context.Tags.Where(tag=> productVM.TagIds.Contains(tag.Id)).Select(tag => tag.Id).CountAsync() != productVM.TagIds.Count())
                 {
-                    if (await _context.Tags.Where(tag => tag.Id == tagId).Select(tag => tag.Id).CountAsync() != productVM.TagIds.Count())
-                    {
-                        ModelState.AddModelError("TagIds", "one of tags doesnt exist!");
-                    }
+                    ModelState.AddModelError("TagIds", "one of tags doesnt exist!");
                 }
             }
             if (productVM.ActiveImg != null)
@@ -66,17 +71,20 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
                     ModelState.AddModelError("ImgFile", "File cant be larger than 1 mb");
                 }
             }
-            foreach (var img in productVM.Images)
+            if (productVM.Images != null)
             {
-                if (!img.IsImageType())
+                foreach (var img in productVM.Images)
                 {
-                    ModelState.AddModelError("", "Wrong file type (" + img.FileName + ")");
-                    //message += "Wrong file type (" + img.FileName + ") \r\n";
-                }
-                if (!img.IsValidSize(1000))
-                {
-                    ModelState.AddModelError("", "File cant be larger than 1 mb");
-                    //message += "Files length must be less than kb (" + img.FileName + ") \r\n";
+                    if (!img.IsImageType())
+                    {
+                        ModelState.AddModelError("", "Wrong file type (" + img.FileName + ")");
+                        //message += "Wrong file type (" + img.FileName + ") \r\n";
+                    }
+                    if (!img.IsValidSize(1000))
+                    {
+                        ModelState.AddModelError("", "File cant be larger than 1 mb");
+                        //message += "Files length must be less than kb (" + img.FileName + ") \r\n";
+                    }
                 }
             }
             if (!ModelState.IsValid)
@@ -122,23 +130,28 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
             var data = await _context.Products.FindAsync(id);
             if (data == null) return NotFound();
             System.IO.File.Delete(Path.Combine(PathConstants.RootPath, data.ActiveImgUrl));
-            foreach (var img in data.Images)
+            var productImageData = await _context.ProductImages.Where(x=> x.ProductId == id).ToListAsync();
+            foreach (var img in productImageData)
             {
                 System.IO.File.Delete(Path.Combine(PathConstants.RootPath, img.ImageUrl));
             }
             data.IsDeleted = true;
             await _context.SaveChangesAsync();
             TempData["Response"] = "deleted";
-            return RedirectToAction(nameof(Index));
-        }
+			return RedirectToAction(nameof(Index), "AdminHome");
+		}
         public async Task<IActionResult> Update(int? id)
         {
+            ViewBag.Categories = _context.Categories;
+            ViewBag.Authors = _context.Authors;
+            ViewBag.Tags = _context.Tags;
             if (id == null) return BadRequest();
             var data = await _context.Products.FindAsync(id);
             if (data == null) return NotFound();
+            var productTagData = await _context.ProductTags.ToListAsync();
             return View(new AdminProductUpdateVM
             {
-                Name= data.Name,
+                Name = data.Name,
                 About = data.About,
                 Description = data.Description,
                 ProductCode = data.ProductCode,
@@ -149,7 +162,7 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
                 SellPrice = data.SellPrice,
                 AuthorId = data.AuthorId,
                 CategoryId = data.CategoryId,
-                TagIds = data.ProductTags.Select(x => x.TagId).ToList()
+                TagIds = productTagData.Where(x=> x.ProductId == data.Id).Select(x => x.TagId).ToList()
             });
         }
         [HttpPost]
@@ -159,6 +172,7 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
             if (id == null) return BadRequest();
             var data = await _context.Products.FindAsync(id);
             if (data == null) return NotFound();
+            var productTagData = await _context.ProductTags.ToListAsync();
             if (productVM.ActualPrice > productVM.SellPrice)
             {
                 ModelState.AddModelError("ActualPrice", "Sell price must be bigger than real price");
@@ -173,12 +187,16 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
             }
             if (productVM.TagIds != null)
             {
-                foreach (var tagId in productVM.TagIds)
+                //foreach (var tagId in productVM.TagIds)
+                //{
+                //    if (await _context.Tags.Where(tag => tag.Id == tagId).Select(tag => tag.Id).CountAsync() != productVM.TagIds.Count())
+                //    {
+                //        ModelState.AddModelError("TagIds", "one of tags doesnt exist!");
+                //    }
+                //}
+                if (await _context.Tags.Where(tag => productVM.TagIds.Contains(tag.Id)).Select(tag => tag.Id).CountAsync() != productVM.TagIds.Count())
                 {
-                    if (await _context.Tags.Where(tag => tag.Id == tagId).Select(tag => tag.Id).CountAsync() != productVM.TagIds.Count())
-                    {
-                        ModelState.AddModelError("TagIds", "one of tags doesnt exist!");
-                    }
+                    ModelState.AddModelError("TagIds", "one of tags doesnt exist!");
                 }
             }
             if (productVM.ActiveImg != null)
@@ -192,17 +210,20 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
                     ModelState.AddModelError("ImgFile", "File cant be larger than 1 mb");
                 }
             }
-            foreach (var img in productVM.Images)
+            if (productVM.Images != null)
             {
-                if (!img.IsImageType())
+                foreach (var img in productVM.Images)
                 {
-                    ModelState.AddModelError("", "Wrong file type (" + img.FileName + ")");
-                    //message += "Wrong file type (" + img.FileName + ") \r\n";
-                }
-                if (!img.IsValidSize(1000))
-                {
-                    ModelState.AddModelError("", "File cant be larger than 1 mb");
-                    //message += "Files length must be less than kb (" + img.FileName + ") \r\n";
+                    if (!img.IsImageType())
+                    {
+                        ModelState.AddModelError("", "Wrong file type (" + img.FileName + ")");
+                        //message += "Wrong file type (" + img.FileName + ") \r\n";
+                    }
+                    if (!img.IsValidSize(1000))
+                    {
+                        ModelState.AddModelError("", "File cant be larger than 1 mb");
+                        //message += "Files length must be less than kb (" + img.FileName + ") \r\n";
+                    }
                 }
             }
             if (!ModelState.IsValid)
@@ -219,6 +240,7 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
             data.ExTax = productVM.ExTax;
             data.IsAvailable = productVM.IsAvailable;
             data.ActualPrice = productVM.ActualPrice;
+            data.CategoryId = productVM.CategoryId;
             data.Discount = productVM.Discount;
             data.SellPrice = productVM.SellPrice;
             data.ActiveImgUrl = productVM.ActiveImg == null ? data.ActiveImgUrl : await productVM.ActiveImg.SaveAsync(PathConstants.ProductImage);

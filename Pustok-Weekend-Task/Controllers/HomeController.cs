@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Pustok_Weekend_Task.Contexts;
 using Pustok_Weekend_Task.ViewModels.HomeVM;
+using Pustok_Weekend_Task.ViewModels.ProductVM;
 using Pustok_Weekend_Task.ViewModels.SliderVM;
 using System.Reflection;
 
@@ -25,7 +26,18 @@ namespace Pustok_Weekend_Task.Controllers
                 IsLeft = slider.IsLeft,
                 ImgUrl = slider.ImgUrl
             }).ToListAsync();
-            return View(models);
+
+			models.Products = await _context.Products.Where(product=> product.IsDeleted == false).Select(product => new ProductListVM
+			{
+                Id = product.Id,
+				Name = product.Name,
+				AuthorName = product.Author.Name +" "+product.Author.Surname,
+                ActiveImgUrl = product.ActiveImgUrl,
+                SellPrice = product.SellPrice,
+                Discount = product.Discount,
+                Category = product.Category.Name,
+			}).ToListAsync();
+			return View(models);
         }
     }
 }

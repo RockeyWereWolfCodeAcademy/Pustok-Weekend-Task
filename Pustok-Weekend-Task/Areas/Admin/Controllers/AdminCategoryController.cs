@@ -1,18 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminAuthorVM;
-using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminSliderVM;
+using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminCategoryVM;
 using Pustok_Weekend_Task.Contexts;
-using Pustok_Weekend_Task.Helpers;
 using Pustok_Weekend_Task.Models;
 
 namespace Pustok_Weekend_Task.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class AdminAuthorController : Controller
+    public class AdminCategoryController : Controller
     {
         PustokDbContext _context { get; }
-        public AdminAuthorController(PustokDbContext context)
+        public AdminCategoryController(PustokDbContext context)
         {
             _context = context;
         }
@@ -22,22 +21,24 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
         }
         public IActionResult Create()
         {
+            ViewBag.Categories = _context.Categories;
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(AdminAuthorCreateVM authorVM)
+        public async Task<IActionResult> Create(AdminCategoryCreateVM categoryVM)
         {
             TempData["Response"] = "temp";
             if (!ModelState.IsValid)
             {
-                return View(authorVM);
+                ViewBag.Categories = _context.Categories;
+                return View(categoryVM);
             }
-            Author author = new Author
+            Category category = new Category
             {
-                Name = authorVM.Name,
-                Surname = authorVM.Surname,
+                Name = categoryVM.Name,
+                ParentCategoryId = categoryVM.ParentCategoryId,
             };
-            await _context.Authors.AddAsync(author);
+            await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
             TempData["Response"] = "created";
             return RedirectToAction(nameof(Index), "AdminHome");
@@ -46,37 +47,43 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
         {
             TempData["Response"] = "temp";
             if (id == null) return BadRequest();
-            var data = await _context.Authors.FindAsync(id);
+            var data = await _context.Categories.FindAsync(id);
             if (data == null) return NotFound();
-            _context.Authors.Remove(data);
+            _context.Categories.Remove(data);
             await _context.SaveChangesAsync();
             TempData["Response"] = "deleted";
             return RedirectToAction(nameof(Index), "AdminHome");
         }
         public async Task<IActionResult> Update(int? id)
         {
+            ViewBag.Categories = _context.Categories;
             if (id == null) return BadRequest();
-            var data = await _context.Authors.FindAsync(id);
+            var data = await _context.Categories.FindAsync(id);
             if (data == null) return NotFound();
-            return View(new AdminAuthorUpdateVM
+            return View(new AdminCategoryUpdateVM
             {
                 Name = data.Name,
-                Surname = data.Surname,
+                ParentCategoryId = data.ParentCategoryId,
             });
         }
         [HttpPost]
-        public async Task<IActionResult> Update(int? id, AdminAuthorUpdateVM authorVM)
+        public async Task<IActionResult> Update(int? id, AdminCategoryUpdateVM categoryVM)
         {
             TempData["Response"] = "temp";
             if (id == null) return BadRequest();
-            var data = await _context.Authors.FindAsync(id);
+            var data = await _context.Categories.FindAsync(id);
             if (data == null) return NotFound();
+            if (categoryVM.ParentCategoryId == data.Id)
+            {
+                ModelState.AddModelError("ParentCategoryId", "Child and parent cannot be same!");
+            }
             if (!ModelState.IsValid)
             {
-                return View(authorVM);
+                ViewBag.Categories = _context.Categories;
+                return View(categoryVM);
             }
-            data.Name = authorVM.Name;
-            data.Surname = authorVM.Surname;
+            data.Name = categoryVM.Name;
+            data.ParentCategoryId = categoryVM.ParentCategoryId;
             await _context.SaveChangesAsync();
             TempData["Response"] = "updated";
             return RedirectToAction(nameof(Index), "AdminHome");

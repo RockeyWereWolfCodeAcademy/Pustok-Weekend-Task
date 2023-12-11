@@ -17,8 +17,8 @@ namespace Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminProductVM
         [Range(0, 100)]
         public float Discount { get; set; }
         public decimal SellPrice { get; set; }
-        public IFormFile ActiveImg { get; set; }
-        public IFormFileCollection Images { get; set; }
+        public IFormFile? ActiveImg { get; set; }
+        public IFormFileCollection? Images { get; set; }
         public int AuthorId { get; set; }
         public int CategoryId { get; set; }
         public IEnumerable<int> TagIds { get; set; }
