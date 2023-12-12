@@ -12,7 +12,9 @@ namespace Pustok_Weekend_Task.Contexts
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<ProductTag> ProductTags { get; set; }
+        public DbSet<BlogTag> BlogTags { get; set; }
     }
 }

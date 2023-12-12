@@ -1,4 +1,5 @@
 ﻿using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminAuthorVM;
+using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminBlogVM;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminCategoryVM;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminProductVM;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminSliderVM;
@@ -13,5 +14,6 @@ namespace Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminHomeVM
         public IEnumerable<AdminCategoryListVM>? Categories { get; set; }
         public IEnumerable<AdminAuthorListVM>? Authors { get; set; }
         public IEnumerable<AdminTagListVM>? Tags { get; set; }
+        public IEnumerable<AdminBlogListVM>? Blogs { get; set; }
     }
 }

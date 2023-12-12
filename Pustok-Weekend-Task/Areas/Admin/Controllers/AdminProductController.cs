@@ -146,9 +146,8 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
             ViewBag.Authors = _context.Authors;
             ViewBag.Tags = _context.Tags;
             if (id == null) return BadRequest();
-            var data = await _context.Products.FindAsync(id);
+            var data = await _context.Products.Include(p=>p.ProductTags).SingleOrDefaultAsync(p=> p.Id == id);
             if (data == null) return NotFound();
-            var productTagData = await _context.ProductTags.ToListAsync();
             return View(new AdminProductUpdateVM
             {
                 Name = data.Name,
@@ -162,7 +161,7 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
                 SellPrice = data.SellPrice,
                 AuthorId = data.AuthorId,
                 CategoryId = data.CategoryId,
-                TagIds = productTagData.Where(x=> x.ProductId == data.Id).Select(x => x.TagId).ToList()
+                TagIds = data.ProductTags.Select(p=>p.TagId),
             });
         }
         [HttpPost]
@@ -249,10 +248,14 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
                 {
                     ImageUrl = i.SaveAsync(PathConstants.ProductImage).Result,
                 }).ToList();
-            data.ProductTags = productVM.TagIds.Select(id => new ProductTag
+            if (!Enumerable.SequenceEqual(data.ProductTags?.Select(b => b.TagId), productVM.TagIds))
             {
-                TagId = id,
-            }).ToList();
+                data.ProductTags = productVM.TagIds.Select(id => new ProductTag
+                {
+                    TagId = id,
+                }).ToList();
+            }
+            
             await _context.SaveChangesAsync();
             TempData["Response"] = "updated";
             return RedirectToAction(nameof(Index), "AdminHome");

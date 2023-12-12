@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminAuthorVM;
+using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminBlogVM;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminCategoryVM;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminHomeVM;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminProductVM;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminSliderVM;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminTagVM;
 using Pustok_Weekend_Task.Contexts;
+using Pustok_Weekend_Task.Models;
 
 namespace Pustok_Weekend_Task.Areas.Admin.Controllers
 {
@@ -60,7 +62,16 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
             {
                 Id = category.Id,
                 Name = category.Name,
-                ParentName = _context.Categories.First(x=> x.Id == category.ParentCategoryId).Name
+                ParentName = _context.Categories.First(x => x.Id == category.ParentCategoryId).Name
+            }).ToListAsync();
+            models.Blogs = await _context.Blogs.Select(blog => new AdminBlogListVM
+            {
+                Id = blog.Id,
+                Title = blog.Title,
+                AuthorName = blog.Author.Name+ " "+blog.Author.Surname,
+                IsDeleted= blog.IsDeleted,
+                CreatedAt = blog.CreatedAt,
+                UpdatedAt = blog.UpdatedAt
             }).ToListAsync();
             return View(models);
         }

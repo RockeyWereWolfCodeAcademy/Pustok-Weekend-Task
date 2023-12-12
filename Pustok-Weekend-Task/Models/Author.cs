@@ -10,5 +10,6 @@ namespace Pustok_Weekend_Task.Models
         [MaxLength(16)]
         public string Surname { get; set; }
         public IEnumerable<Product>? Products { get; set; }
+        public IEnumerable<Blog>? Blogs { get; set; }
     }
 }
