@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pustok_Weekend_Task.Contexts;
+using Pustok_Weekend_Task.ViewModels.BlogVM;
 using Pustok_Weekend_Task.ViewModels.HomeVM;
 using Pustok_Weekend_Task.ViewModels.ProductVM;
 using Pustok_Weekend_Task.ViewModels.SliderVM;
@@ -37,7 +38,16 @@ namespace Pustok_Weekend_Task.Controllers
                 Discount = product.Discount,
                 Category = product.Category.Name,
 			}).ToListAsync();
-			return View(models);
+            models.Blogs = await _context.Blogs.Where(blog=> blog.IsDeleted == false).Select(blog=> new BlogListVM
+            {
+                Id=blog.Id,
+                Title = blog.Title,
+                Description = blog.Description,
+                AuthorName = blog.Author.Name+" "+blog.Author.Surname,
+                CreatedAt = DateOnly.FromDateTime(blog.CreatedAt),
+                ImgUrl= blog.ImgUrl,
+            }).ToListAsync();
+            return View(models);
         }
     }
 }

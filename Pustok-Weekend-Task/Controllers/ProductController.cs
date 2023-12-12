@@ -21,29 +21,27 @@ namespace Pustok_Weekend_Task.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return BadRequest();
-            var data = await _context.Products.FindAsync(id);
+            var data = _context.Products
+             .Where(p => p.Id == id)
+             .Select(p => new ProductDetailsVM
+             {
+                 Name = p.Name,
+                 About = p.About,
+                 Description = p.Description,
+                 ExTax = p.ExTax,
+                 ProductCode = p.ProductCode,
+                 IsAvailable = p.IsAvailable,
+                 Price = p.SellPrice,
+                 Discount = p.Discount,
+                 ImageURLs = p.Images.Select(img => img.ImageUrl),
+                 Tags = p.ProductTags.Select(pt => pt.Tag.Name),
+                 AuthorName = p.Author.Name + " " + p.Author.Surname
+             })
+             .SingleOrDefault();
+
             if (data == null) return NotFound();
-            var productImageData = await _context.ProductImages.Where(x => x.ProductId == id).ToListAsync();
-            var productTagDataQuery = from ProductTag in _context.ProductTags
-                                      join Tag in _context.Tags
-                                      on ProductTag.TagId equals Tag.Id
-                                      where ProductTag.ProductId == id
-                                      select Tag.Name;
-            
-            return View(new ProductDetailsVM
-            {
-                Name = data.Name,
-                About = data.About,
-                Description = data.Description,
-                ExTax = data.ExTax,
-                ProductCode = data.ProductCode,
-                IsAvailable = data.IsAvailable,
-                Price = data.SellPrice,
-                Discount = data.Discount,
-                ImageURLs = productImageData.Select(img=> img.ImageUrl).ToList(),
-                Tags = productTagDataQuery.ToList(),
-                //AuthorName = data.Author.Name + " " + data.Author.Surname,
-            });
+
+            return View(data);
         }
     }
 }

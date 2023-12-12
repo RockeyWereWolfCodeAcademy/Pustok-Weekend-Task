@@ -10,5 +10,6 @@ namespace Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminBlogVM
         public string? Description { get; set; }
         public int AuthorId { get; set; }
         public IEnumerable<int> TagIds { get; set; }
+        public IFormFile ImgFile { get; set; }
     }
 }

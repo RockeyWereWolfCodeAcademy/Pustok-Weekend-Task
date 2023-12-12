@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminBlogVM;
 using Pustok_Weekend_Task.Contexts;
+using Pustok_Weekend_Task.Helpers;
 using Pustok_Weekend_Task.Models;
 
 namespace Pustok_Weekend_Task.Areas.Admin.Controllers
@@ -18,7 +19,7 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             ViewBag.Authors = _context.Authors;
             ViewBag.Tags = _context.Tags;
@@ -43,10 +44,11 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
                 Title = blogVM.Title,
                 Description = blogVM.Description,
                 AuthorId = blogVM.AuthorId,
-                BlogTags = blogVM.TagIds?.Select(id => new BlogTag
+                BlogTags = blogVM.TagIds.Select(id => new BlogTag
                 {
                     TagId = id,
                 }).ToList(),
+                ImgUrl = await blogVM.ImgFile.SaveAsync(PathConstants.BlogImage)
             };
             await _context.AddAsync(blog);
             await _context.SaveChangesAsync();
@@ -59,6 +61,7 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
             if (id == null) return BadRequest();
             var data = await _context.Blogs.FindAsync(id);
             if (data == null) return NotFound();
+            System.IO.File.Delete(Path.Combine(PathConstants.RootPath, data.ImgUrl));
             data.IsDeleted = true;
             await _context.SaveChangesAsync();
             TempData["Response"] = "deleted";
@@ -83,7 +86,7 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
         public async Task<IActionResult> Update(int? id, AdminBlogUpdateVM blogVM)
         {
             TempData["Response"] = "temp";
-            var data = await _context.Blogs.FindAsync(id);
+            var data = await _context.Blogs.Include(b => b.BlogTags).SingleOrDefaultAsync(b => b.Id == id);
             if (data == null) return NotFound();
             if (!await _context.Authors.AnyAsync(author => author.Id == blogVM.AuthorId))
             {
@@ -92,18 +95,20 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Authors = _context.Authors;
+                ViewBag.Tags = _context.Tags;
                 return View(blogVM);
             }
             data.Title = blogVM.Title;
             data.Description = blogVM.Description;
             data.AuthorId = blogVM.AuthorId;
-            if (!Enumerable.SequenceEqual(data.BlogTags?.Select(b => b.TagId), blogVM.TagIds))
+            if (!Enumerable.SequenceEqual(data.BlogTags.Select(b => b.TagId).ToList(), blogVM.TagIds))
             {
                 data.BlogTags = blogVM.TagIds.Select(id => new BlogTag
                 {
                     TagId = id,
                 }).ToList();
             }
+            data.ImgUrl = blogVM.ImgFile == null ? data.ImgUrl : await blogVM.ImgFile.SaveAsync(PathConstants.SliderImage);
             data.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             TempData["Response"] = "updated";

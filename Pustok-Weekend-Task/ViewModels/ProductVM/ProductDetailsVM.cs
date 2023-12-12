@@ -1,4 +1,6 @@
-﻿namespace Pustok_Weekend_Task.ViewModels.ProductVM
+﻿using Pustok_Weekend_Task.Models;
+
+namespace Pustok_Weekend_Task.ViewModels.ProductVM
 {
     public class ProductDetailsVM
     {

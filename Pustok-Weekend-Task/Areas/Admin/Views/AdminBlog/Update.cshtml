@@ -9,7 +9,7 @@
         <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"] </h6>
     </div>
     <div class="card-body">
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label asp-for="Title"></label>
                 <input asp-for="Title" class="form-control">
@@ -29,10 +29,15 @@
             </div>
             <div>
                 <label asp-for="TagIds">Tags</label>
-                <select class="form-control" asp-for="TagIds" asp-items='@new SelectList(ViewBag.Tags,"Id", "Title")'>
+                <select class="form-control" asp-for="TagIds" asp-items='@new SelectList(ViewBag.Tags,"Id", "Name")'>
                     <option disabled selected>Select Tags</option>
                 </select>
                 <span asp-validation-for="TagIds" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImgFile">Image</label>
+                <input asp-for="ImgFile" accept="image/*">
+                <span asp-validation-for="ImgFile" class="text-danger"></span>
             </div>
             <button class="btn btn-success">Update</button>
         </form>

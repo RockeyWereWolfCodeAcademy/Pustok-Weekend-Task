@@ -60,6 +60,10 @@
             <div class="col-lg-7">
                 <div class="product-details-info pl-lg--30 ">
                     <p class="tag-block">Tags: 
+                        @if(Model.Tags == null)
+                        {
+                            <p>lox</p>
+                        }
                         @foreach(var tag in Model.Tags)
                         {
                             <a href="#">@tag</a>@(", ")

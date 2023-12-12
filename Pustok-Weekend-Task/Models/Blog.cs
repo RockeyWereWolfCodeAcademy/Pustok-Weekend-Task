@@ -1,5 +1,4 @@
-﻿using Pustok_Weekend_Task.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Pustok_Weekend_Task.Models
 {
@@ -16,5 +15,6 @@ namespace Pustok_Weekend_Task.Models
         public Author Author { get; set; }
         public bool IsDeleted { get; set; }
         public IEnumerable<BlogTag> BlogTags { get; set; }
+        public string ImgUrl { get; set; }
     }
 }
