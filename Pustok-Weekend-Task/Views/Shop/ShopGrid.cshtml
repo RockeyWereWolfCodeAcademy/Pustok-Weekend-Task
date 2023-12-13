@@ -1,0 +1,28 @@
+﻿@section scripts {
+    <script>
+
+		$("#load-product").on("click", "#prod-load a", function (ev) {
+            ev.preventDefault();
+            fetch($(this))
+                .then(res => res.text())
+				.then(data => $("#load-product").html(data))
+        })
+	</script>
+}
+<section class="breadcrumb-section">
+	<h2 class="sr-only">Site Breadcrumb</h2>
+	<div class="container">
+		<div class="breadcrumb-contents">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Home</a></li>
+					<li class="breadcrumb-item active">Shop</li>
+				</ol>
+			</nav>
+		</div>
+	</div>
+</section>
+<main class="inner-page-sec-padding-bottom" id="load-product">
+	<partial name="_ShopProductPartial" />
+</main>
+

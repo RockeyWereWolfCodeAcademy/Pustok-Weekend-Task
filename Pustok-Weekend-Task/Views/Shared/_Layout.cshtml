@@ -222,23 +222,24 @@
                             <div class="main-navigation flex-lg-right">
                                 <ul class="main-menu menu-right main-menu--white li-last-0">
                                     <li class="menu-item has-children">
-                                        <a href="javascript:void(0)">
-                                            Home <i class="fas fa-chevron-down dropdown-arrow"></i>
+                                        <a asp-action="Index" asp-controller="Home">
+                                            Home
                                         </a>
-                                        <ul class="sub-menu">
+                                    
+                                        @*< ul class="sub-menu">
                                             <li> <a href="index.html">Home One</a></li>
                                             <li> <a href="index-2.html">Home Two</a></li>
                                             <li> <a href="index-3.html">Home Three</a></li>
                                             <li> <a href="index-4.html">Home Four</a></li>
                                             <li> <a href="index-5.html">Home Five</a></li>
-                                        </ul>
+                                        </ul> *@
                                     </li>
                                     <!-- Shop -->
                                     <li class="menu-item has-children mega-menu">
-                                        <a href="javascript:void(0)">
-                                            shop <i class="fas fa-chevron-down dropdown-arrow"></i>
+                                        <a asp-action="ShopGrid" asp-controller="Shop">
+                                            shop 
                                         </a>
-                                        <ul class="sub-menu four-column">
+                                        @* <ul class="sub-menu four-column">
                                             <li class="cus-col-25">
                                                 <h3 class="menu-title"><a href="javascript:void(0)">Shop Grid </a></h3>
                                                 <ul class="mega-single-block">
@@ -306,7 +307,7 @@
                                                     </li>
                                                 </ul>
                                             </li>
-                                        </ul>
+                                        </ul> *@
                                     </li>
                                     <!-- Pages -->
                                     <li class="menu-item has-children">
@@ -994,6 +995,7 @@
     <script src="~/home/assets/js/plugins.js"></script>
     <script src="~/home/assets/js/ajax-mail.js"></script>
     <script src="~/home/assets/js/custom.js"></script>
+    @await RenderSectionAsync("scripts", false)
 </body>
 
 

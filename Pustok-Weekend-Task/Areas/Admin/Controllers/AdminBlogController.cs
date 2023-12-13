@@ -108,7 +108,7 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
                     TagId = id,
                 }).ToList();
             }
-            data.ImgUrl = blogVM.ImgFile == null ? data.ImgUrl : await blogVM.ImgFile.SaveAsync(PathConstants.SliderImage);
+            data.ImgUrl = blogVM.ImgFile == null ? data.ImgUrl : await blogVM.ImgFile.SaveAsync(PathConstants.BlogImage);
             data.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             TempData["Response"] = "updated";
