@@ -17,13 +17,9 @@ namespace Pustok_Weekend_Task.Controllers
         {
             return View();
         }
-        public IActionResult ShopGrid()
+        public async Task<IActionResult> ShopGrid(int page = 1, int count = 4)
         {
-            return View();
-		}
-		public async Task<IActionResult> ShopProductLoad(int page, int count)
-        {
-			var items = _context.Products.Where(p => !p.IsDeleted).Skip(count * (page-1)).Take(count).Select(p => new ProductListVM
+			var items = await _context.Products.Where(p => !p.IsDeleted).Skip(count * (page - 1)).Take(count).Select(p => new ProductListVM
 			{
 				Id = p.Id,
 				Category = p.Category.Name,
@@ -31,8 +27,21 @@ namespace Pustok_Weekend_Task.Controllers
 				Name = p.Name,
 				ActiveImgUrl = p.ActiveImgUrl,
 				SellPrice = p.SellPrice,
-			});
-			int totalCount = await _context.Products.CountAsync(x => !x.IsDeleted);
+			}).ToListAsync();
+			return View(items);
+		}
+		public async Task<IActionResult> ShopProductLoad(int page = 1, int count = 4)
+        {
+			var items = await _context.Products.Where(p => !p.IsDeleted).Skip(count * (page-1)).Take(count).Select(p => new ProductListVM
+			{
+				Id = p.Id,
+				Category = p.Category.Name,
+				Discount = p.Discount,
+				Name = p.Name,
+				ActiveImgUrl = p.ActiveImgUrl,
+				SellPrice = p.SellPrice,
+			}).ToListAsync();
+			//int totalCount = await _context.Products.CountAsync(x => !x.IsDeleted);
 			return PartialView("_ShopProductPartial", items);
         }
     }

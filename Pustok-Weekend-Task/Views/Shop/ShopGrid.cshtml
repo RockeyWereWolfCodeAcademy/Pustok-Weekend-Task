@@ -1,12 +1,33 @@
-﻿@section scripts {
-    <script>
+﻿@{
+	ViewData["Title"] = "Shop";
+}
+@model IEnumerable<ProductListVM>
 
-		$("#load-product").on("click", "#prod-load a", function (ev) {
-            ev.preventDefault();
-            fetch($(this))
-                .then(res => res.text())
-				.then(data => $("#load-product").html(data))
-        })
+@section scripts {
+    <script>
+		var page = 2;
+		var pageSize = 4;
+		$("#load-product").on("click", "#prod-load", function (ev) {
+			ev.preventDefault();
+			$.ajax({
+				url: "@Url.Action("ShopProductLoad", "Shop")?page=" + page + "&pageSize=" + pageSize,
+				success: function (data) {
+					$("#records").append(data);
+					page++;
+				}
+			});
+		})
+		// var page = 2;
+		// var pageSize = 4;
+		// $("#prod-load").click(function () {
+		// 	$.ajax({
+		// 		url: "Shop/ShopProductLoad?page=" + page + "&pageSize=" + pageSize,
+		// 		success: function (data) {
+		// 			$("#records").append(data);
+		// 			page++;
+		// 		}
+		// 	});
+		// });
 	</script>
 }
 <section class="breadcrumb-section">
@@ -23,6 +44,12 @@
 	</div>
 </section>
 <main class="inner-page-sec-padding-bottom" id="load-product">
-	<partial name="_ShopProductPartial" />
+	<partial model="Model" name="_ShopProductPartial" />
+	<div class="row pt--30">
+		<div class="col-md-12 text-center">
+			<button id="prod-load" type="button" class="btn btn-primary">Load More</button>
+			@* <a id="prod-load" class="btn btn-primary" asp-action="ShopProductLoad" type="button">Load More</a> *@
+		</div>
+	</div>
 </main>
 
