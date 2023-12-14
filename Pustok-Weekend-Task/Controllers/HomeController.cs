@@ -19,14 +19,6 @@ namespace Pustok_Weekend_Task.Controllers
         public async Task<IActionResult>  Index()
         {
             var models = new HomeListVM();
-            models.Sliders = await _context.Sliders.Select(slider => new SliderListVM
-            {
-                Title = slider.Title,
-                Description = slider.Description,
-                Price = slider.Price,
-                IsLeft = slider.IsLeft,
-                ImgUrl = slider.ImgUrl
-            }).ToListAsync();
 
 			models.Products = await _context.Products.Where(product=> product.IsDeleted == false).Select(product => new ProductListVM
 			{

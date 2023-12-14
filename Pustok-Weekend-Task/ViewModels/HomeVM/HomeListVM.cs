@@ -6,7 +6,6 @@ namespace Pustok_Weekend_Task.ViewModels.HomeVM
 {
     public class HomeListVM
     {
-        public IEnumerable<SliderListVM> Sliders { get; set; }
         public IEnumerable<ProductListVM> Products { get; set; }
         public IEnumerable<BlogListVM> Blogs { get; set; }
     }

@@ -16,59 +16,7 @@
                             "slidesToShow": 1,
                             "dots":true
                             }'>
-        @if (Model.Sliders.Count() != 0)
-        {
-            @foreach (var slider in Model.Sliders)
-            {
-                <div class="single-slide bg-shade-whisper  ">
-                    <div class="container">
-                        <div class="home-content text-center text-sm-left position-relative">
-                            <div class="hero-partial-image @(slider.IsLeft == true ? "image-left" : "image-right")">
-                                <img src="@slider.ImgUrl" alt="">
-                            </div>
-                            <div class="row @(slider.IsLeft == true ? "align-items-center justify-content-start justify-content-md-end" : "no-gutters" ) ">
-                                <div class="col-xl-6 col-md-6 col-sm-7">
-                                    <div class="home-content-inner @(slider.IsLeft == true ? "content-right-side" : "content-left-side")">
-                                        <h1>
-                                            @slider.Title
-                                        </h1>
-                                        <h2>@slider.Description</h2>
-                                        <a href="shop-grid.html" class="btn btn-outlined--primary">
-                                            $@slider.Price - Order Now!
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        }
-        else
-        {
-            <div class="single-slide bg-shade-whisper  ">
-                <div class="container">
-                    <div class="home-content text-center text-sm-left position-relative">
-                        <div class="hero-partial-image image-right">
-                            <img src="" alt="">
-                        </div>
-                        <div class="row no-gutters">
-                            <div class="col-xl-6 col-md-6 col-sm-7">
-                                <div class="home-content-inner content-left-side">
-                                    <h1>
-                                        Sample Title
-                                    </h1>
-                                    <h2>Sample Description</h2>
-                                    <a href="shop-grid.html" class="btn btn-outlined--primary">
-                                        $Sample Price - Order Now!
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+        @await Component.InvokeAsync("Slider")
     </div>
 </section>
 <!--=================================
