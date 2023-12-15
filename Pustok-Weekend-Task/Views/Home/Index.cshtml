@@ -1,8 +1,25 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
 @model HomeListVM
+
+@section scripts {
+   <script>
+        $("#add-basket").on("click", function (ev) {
+            ev.preventDefault()
+            fetch($(this).attr("href"))
+                .then(res => {
+                    if (res.ok) {
+                        fetch(window.location.origin + '/Product/GetBasket')
+                            .then(res => res.text())
+                            .then(data => $("#basket").html(data))
+                    }
+                })
+        })
+   </script>
+        
+}
+
 
 <!--=================================
         Hero Area
@@ -159,7 +176,7 @@ Home Slider Tab
                                                 <img src="@product.ActiveImgUrl" alt="">
                                             </a>
                                             <div class="hover-btns">
-                                                <a href="cart.html" class="single-btn">
+                                                <a id="add-basket" asp-action="AddToBasket" asp-controller="Product" asp-route-id="@product.Id" class="single-btn">
                                                     <i class="fas fa-shopping-basket"></i>
                                                 </a>
                                                 <a href="wishlist.html" class="single-btn">
