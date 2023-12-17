@@ -1,19 +1,27 @@
-﻿﻿@using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminHomeVM;
-@model AdminHomeListVM
-
-@{
+﻿@{
     ViewData["Title"] = "Admin Home";
 }
 
 @section styles{
     <!-- Custom styles for this page -->
     <link href="~/admin/assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
 }
 
 @section scripts{
+    
+    <script>
+        $('[data-toggle="popover-hover"]').popover({
+            html: true,
+            trigger: 'hover',
+            placement: 'bottom',
+            content: function () { return '<img src="' + $(this).data('img') + '"  class="img-fluid"/>'; }
+        });
+    </script>
     <!-- Page level plugins -->
     <script src="~/admin/assets/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="~/admin/assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     <!-- Page level custom scripts -->
     @* <script src="~/admin/assets/js/demo/datatables-demo.js"></script> *@
@@ -44,319 +52,41 @@
     
 
 }
-
-
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="mb-0">
-            <a data-toggle="collapse" href="#SlidersCollapse" aria-expanded="true" aria-controls="SlidersCollapse">
-                <p class="m-0 font-weight-bold text-primary">Sliders</p>
-            </a>
-        </h6>
-        @* <a class="btn" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"> *@
-    </div>
-    <div class="collapse multi-collapse" id="SlidersCollapse">
-        <div class="card-body">
-            <a class="btn btn-outline-success" asp-action="Create" asp-controller="AdminSlider">Create</a>
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Tittle</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Image</th>
-                            <th>Position</th>
-                            <th colspan="2" style="text-align: center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Sliders.Count() != 0)
-                        {
-                            @foreach (var slider in Model.Sliders)
-                            {
-                                <tr>
-                                    <td>@slider.Id</td>
-                                    <td>@slider.Title</td>
-                                    <td>@slider.Description</td>
-                                    <td>@slider.Price</td>
-                                    <td><img src="@slider.ImgUrl" width="250px" height="250px" /></td>
-                                    <td>@(slider.IsLeft == true ? "Image on left" : "image on right")</td>
-                                    <td><a class="btn btn-outline-info" asp-action="Update" asp-controller="AdminSlider" asp-route-id="@slider.Id">Update</a></td>
-                                    <td><a class="btn btn-outline-danger" asp-action="Delete" asp-controller="AdminSlider" asp-route-id="@slider.Id">Delete</a></td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr align="center">
-                                <td colspan="8">NO DATA</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="mb-0">
-            <a data-toggle="collapse" href="#ProductsCollapse" aria-expanded="true" aria-controls="ProductsCollapse">
-                <p class="m-0 font-weight-bold text-primary">Products</p>
-            </a>
-        </h6>
-        @* <a class="btn" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"> *@
-    </div>
-    <div class="collapse multi-collapse" id="ProductsCollapse">
-        <div class="card-body">
-            <a class="btn btn-outline-success" asp-action="Create" asp-controller="AdminProduct">Create</a>
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Active Image</th>
-                            <th>ExTax</th>
-                            <th>Is Available</th>
-                            <th>Actual Price</th>
-                            <th>Sell Price</th>
-                            <th>Discount</th>
-                            <th>Category</th>
-                            <th>Author</th>
-                            <th colspan="2" style="text-align: center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Products.Count() != 0)
-                        {
-                            @foreach (var product in Model.Products)
-                            {
-                                <tr class='@(product.IsDeleted ? "bg-danger text-white" : "")'>
-                                    <td>@product.Id</td>
-                                    <td>@product.Name</td>
-                                    <td><img src="@product.ActiveImageUrl" width="250px" height="250px" /></td>
-                                    <td>@product.ExTax</td>
-                                    <td>@(product.IsAvailable == true ? "yes" : "no")</td>
-                                    <td>@product.ActualPrice</td>
-                                    <td>@product.SellPrice</td>
-                                    <td>@product.Discount</td>
-                                    <td>@product.CategoryName</td>
-                                    <td>@product.AuthorFullName</td>
-                                    <td><a class="btn btn-outline-info" asp-action="Update" asp-controller="AdminProduct" asp-route-id="@product.Id">Update</a></td>
-                                    <td><a class="btn btn-outline-danger" asp-action="Delete" asp-controller="AdminProduct" asp-route-id="@product.Id">Delete</a></td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr align="center">
-                                <td colspan="11">NO DATA</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="mb-0">
-            <a data-toggle="collapse" href="#CategoriesCollapse" aria-expanded="true" aria-controls="CategoriesCollapse">
-                <p class="m-0 font-weight-bold text-primary">Categories</p>
-            </a>
-        </h6>
-        @* <a class="btn" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"> *@
-    </div>
-    <div class="collapse multi-collapse" id="CategoriesCollapse">
-        <div class="card-body">
-            <a class="btn btn-outline-success" asp-action="Create" asp-controller="AdminCategory">Create</a>
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Parent Name</th>
-                            <th colspan="2" style="text-align: center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Categories.Count() != 0)
-                        {
-                            @foreach (var category in Model.Categories)
-                            {
-                                <tr>
-                                    <td>@category.Id</td>
-                                    <td>@category.Name</td>
-                                    <td>@category.ParentName</td>
-                                    <td><a class="btn btn-outline-info" asp-action="Update" asp-controller="AdminCategory" asp-route-id="@category.Id">Update</a></td>
-                                    <td><a class="btn btn-outline-danger" asp-action="Delete" asp-controller="AdminCategory" asp-route-id="@category.Id">Delete</a></td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr align="center">
-                                <td colspan="4">NO DATA</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="mb-0">
-            <a data-toggle="collapse" href="#TagsCollapse" aria-expanded="true" aria-controls="TagsCollapse">
-                <p class="m-0 font-weight-bold text-primary">Tags</p>
-            </a>
-        </h6>
-        @* <a class="btn" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"> *@
-    </div>
-    <div class="collapse multi-collapse" id="TagsCollapse">
-        <div class="card-body">
-            <a class="btn btn-outline-success" asp-action="Create" asp-controller="AdminTag">Create</a>
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th colspan="2" style="text-align: center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Tags.Count() != 0)
-                        {
-                            @foreach (var tag in Model.Tags)
-                            {
-                                <tr>
-                                    <td>@tag.Id</td>
-                                    <td>@tag.Name</td>
-                                    <td><a class="btn btn-outline-info" asp-action="Update" asp-controller="AdminTag" asp-route-id="@tag.Id">Update</a></td>
-                                    <td><a class="btn btn-outline-danger" asp-action="Delete" asp-controller="AdminTag" asp-route-id="@tag.Id">Delete</a></td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr align="center">
-                                <td colspan="3">NO DATA</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="mb-0">
-            <a data-toggle="collapse" href="#AuthorsCollapse" aria-expanded="true" aria-controls="AuthorsCollapse">
-                <p class="m-0 font-weight-bold text-primary">Authors</p>
-            </a>
-        </h6>
-        @* <a class="btn" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"> *@
-    </div>
-    <div class="collapse multi-collapse" id="AuthorsCollapse">
-        <div class="card-body">
-            <a class="btn btn-outline-success" asp-action="Create" asp-controller="AdminAuthor">Create</a>
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Surname</th>
-                            <th colspan="2" style="text-align: center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Authors.Count() != 0)
-                        {
-                            @foreach (var author in Model.Authors)
-                            {
-                                <tr>
-                                    <td>@author.Id</td>
-                                    <td>@author.Name</td>
-                                    <td>@author.Surname</td>
-                                    <td><a class="btn btn-outline-info" asp-action="Update" asp-controller="AdminAuthor" asp-route-id="@author.Id">Update</a></td>
-                                    <td><a class="btn btn-outline-danger" asp-action="Delete" asp-controller="AdminAuthor" asp-route-id="@author.Id">Delete</a></td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr align="center">
-                                <td colspan="4">NO DATA</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="mb-0">
-            <a data-toggle="collapse" href="#BlogsCollapse" aria-expanded="true" aria-controls="BlogsCollapse">
-                <p class="m-0 font-weight-bold text-primary">Blogs</p>
-            </a>
+    <div class="card-header py-3 m-2">
+        <h6 class="mb-0 font-weight-bold text-primary">
+            Tables
         </h6>
     </div>
-    <div class="collapse multi-collapse" id="BlogsCollapse">
-        <div class="card-body">
-            <a class="btn btn-outline-success" asp-action="Create" asp-controller="AdminBlog">Create</a>
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Creation Time</th>
-                            <th>Last Update</th>
-                            <th colspan="2" style="text-align: center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Blogs.Count() != 0)
-                        {
-                            @foreach (var blog in Model.Blogs)
-                            {
-                                <tr class='@(blog.IsDeleted ? "bg-danger text-white" : "")'>
-                                    <td>@blog.Id</td>
-                                    <td>@blog.Title</td>
-                                    <td>@blog.AuthorName</td>
-                                    <td>@blog.CreatedAt</td>
-                                    <td>@blog.UpdatedAt</td>
-                                    <td><a class="btn btn-outline-info" asp-action="Update" asp-controller="AdminBlog" asp-route-id="@blog.Id">Update</a></td>
-                                    <td><a class="btn btn-outline-danger" asp-action="Delete" asp-controller="AdminBlog" asp-route-id="@blog.Id">Delete</a></td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr align="center">
-                                <td colspan="6">NO DATA</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+    <div class="card-body">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="sliders-tab" data-bs-toggle="tab" data-bs-target="#sliders" type="button" role="tab" aria-controls="sliders" aria-selected="true">Sliders</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab" aria-controls="products" aria-selected="false">Products</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="categories-tab" data-bs-toggle="tab" data-bs-target="#categories" type="button" role="tab" aria-controls="categories" aria-selected="false">Categories</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tags-tab" data-bs-toggle="tab" data-bs-target="#tags" type="button" role="tab" aria-controls="tags" aria-selected="false">Tags</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="authors-tab" data-bs-toggle="tab" data-bs-target="#authors" type="button" role="tab" aria-controls="authors" aria-selected="false">Authors</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="blogs-tab" data-bs-toggle="tab" data-bs-target="#blogs" type="button" role="tab" aria-controls="blogs" aria-selected="false">Blogs</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent" style="overflow:auto">
+            <div class="tab-pane fade show active" id="sliders" role="tabpanel" aria-labelledby="sliders-tab">@await Component.InvokeAsync("SlidersTable")</div>
+            <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">@await Component.InvokeAsync("ProductsTable")</div>
+            <div class="tab-pane fade" id="categories" role="tabpanel" aria-labelledby="categories-tab">@await Component.InvokeAsync("CategoriesTable")</div>
+            <div class="tab-pane fade" id="tags" role="tabpanel" aria-labelledby="tags-tab">@await Component.InvokeAsync("TagsTable")</div>
+            <div class="tab-pane fade" id="authors" role="tabpanel" aria-labelledby="authors-tab">@await Component.InvokeAsync("AuthorsTable")</div>
+            <div class="tab-pane fade" id="blogs" role="tabpanel" aria-labelledby="blogs-tab">@await Component.InvokeAsync("BlogsTable")</div>
         </div>
     </div>
 </div>

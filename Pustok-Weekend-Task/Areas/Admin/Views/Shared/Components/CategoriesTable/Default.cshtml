@@ -1,0 +1,35 @@
+﻿@model IEnumerable<AdminCategoryListVM>
+<a class="btn btn-outline-success" asp-action="Create" asp-controller="AdminCategory">Create</a>
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Parent Name</th>
+                <th colspan="2" style="text-align: center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count() != 0)
+            {
+                @foreach (var category in Model)
+                {
+                    <tr>
+                        <td>@category.Id</td>
+                        <td>@category.Name</td>
+                        <td>@category.ParentName</td>
+                        <td><a class="btn btn-outline-info" asp-action="Update" asp-controller="AdminCategory" asp-route-id="@category.Id">Update</a></td>
+                        <td><a class="btn btn-outline-danger" asp-action="Delete" asp-controller="AdminCategory" asp-route-id="@category.Id">Delete</a></td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr align="center">
+                    <td colspan="4">NO DATA</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
