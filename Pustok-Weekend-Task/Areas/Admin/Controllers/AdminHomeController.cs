@@ -10,5 +10,9 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
         {
             return View();
         }
+        public IActionResult GetMyViewComponent(int calledPage)
+        {
+            return ViewComponent("ProductsTable", new { page = calledPage });
+        }
     }
 }

@@ -16,7 +16,19 @@
             trigger: 'hover',
             placement: 'bottom',
             content: function () { return '<img src="' + $(this).data('img') + '"  class="img-fluid"/>'; }
-        });
+        })
+        $(".tab-pane").on("click", "#prod-pag a", function (ev) {
+            ev.preventDefault();
+            fetch($(this).attr("href"))
+                .then(res => res.text())
+                .then(data => $("#products").html(data))
+        })
+        $("tab-pane").on("click", '[option]', function (ev) {
+            ev.preventDefault();
+            fetch($(this).attr("href"))
+                .then(res => res.text())
+                .then(data => $("#products").html(data))
+        })
     </script>
     <!-- Page level plugins -->
     <script src="~/admin/assets/vendor/datatables/jquery.dataTables.min.js"></script>
@@ -80,7 +92,7 @@
                 <button class="nav-link" id="blogs-tab" data-bs-toggle="tab" data-bs-target="#blogs" type="button" role="tab" aria-controls="blogs" aria-selected="false">Blogs</button>
             </li>
         </ul>
-        <div class="tab-content" id="myTabContent" style="overflow:auto">
+        <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="sliders" role="tabpanel" aria-labelledby="sliders-tab">@await Component.InvokeAsync("SlidersTable")</div>
             <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">@await Component.InvokeAsync("ProductsTable")</div>
             <div class="tab-pane fade" id="categories" role="tabpanel" aria-labelledby="categories-tab">@await Component.InvokeAsync("CategoriesTable")</div>
