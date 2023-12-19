@@ -57,6 +57,7 @@ namespace Pustok_Weekend_Task
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

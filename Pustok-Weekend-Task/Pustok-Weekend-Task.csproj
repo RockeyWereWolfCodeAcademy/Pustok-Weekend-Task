@@ -12,6 +12,7 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="wwwroot\savedimages\blog\" />
     <Folder Include="wwwroot\savedimages\blog\" />
+    <Folder Include="wwwroot\savedimages\user\" />
     <Folder Include="wwwroot\savedimages\product\" />
   </ItemGroup>
 

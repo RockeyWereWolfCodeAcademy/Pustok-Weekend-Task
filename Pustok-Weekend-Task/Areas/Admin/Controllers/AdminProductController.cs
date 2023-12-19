@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,8 @@ using Pustok_Weekend_Task.Models;
 namespace Pustok_Weekend_Task.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class AdminProductController : Controller
+	[Authorize(Roles = "SuperAdmin, Admin, Moderator")]
+	public class AdminProductController : Controller
     {
         PustokDbContext _context { get; }
         public AdminProductController(PustokDbContext context)
@@ -120,7 +122,7 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
             TempData["Response"] = "created";
-            return RedirectToAction(nameof(Index), "AdminHome");
+            return RedirectToAction("Index", "AdminHome");
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -244,10 +246,10 @@ namespace Pustok_Weekend_Task.Areas.Admin.Controllers
             data.SellPrice = productVM.SellPrice;
             data.ActiveImgUrl = productVM.ActiveImg == null ? data.ActiveImgUrl : await productVM.ActiveImg.SaveAsync(PathConstants.ProductImage);
             data.Images = productVM.Images == null || productVM.Images.Count == 0 ? data.Images :
-                productVM.Images.Select(i => new ProductImage
-                {
-                    ImageUrl = i.SaveAsync(PathConstants.ProductImage).Result,
-                }).ToList();
+            productVM.Images.Select(i => new ProductImage
+            {
+                ImageUrl = i.SaveAsync(PathConstants.ProductImage).Result,
+            }).ToList();
             if (!Enumerable.SequenceEqual(data.ProductTags?.Select(b => b.TagId), productVM.TagIds))
             {
                 data.ProductTags = productVM.TagIds.Select(id => new ProductTag

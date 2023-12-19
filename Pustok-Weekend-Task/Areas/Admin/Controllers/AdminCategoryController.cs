@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminAuthorVM;
 using Pustok_Weekend_Task.Areas.Admin.ViewModels.AdminCategoryVM;
@@ -8,7 +9,8 @@ using Pustok_Weekend_Task.Models;
 namespace Pustok_Weekend_Task.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class AdminCategoryController : Controller
+	[Authorize(Roles = "SuperAdmin, Admin, Moderator")]
+	public class AdminCategoryController : Controller
     {
         PustokDbContext _context { get; }
         public AdminCategoryController(PustokDbContext context)

@@ -1,5 +1,5 @@
 ﻿@model List<BasketProductItemVM>
-<div id="basket" class="cart-block">
+<div class="cart-block">
     <div class="cart-total">
         <span class="text-number">
             @Model.Sum(x=>x.Count)
@@ -14,20 +14,19 @@
     </div>
     <div class="cart-dropdown-block">
         <div class=" single-cart-block ">
-            <div class="cart-product">
+            <div class="cart-product" style="display:flex; flex-direction:column">
                 @foreach(var product in Model)
                 {
-                    <a asp-action="Details" asp-controller="Product" class="image">
+                    <a asp-action="Details" asp-controller="Product" asp-route-id="@product.Id" class="image">
                         <img src="~/@product.ImageUrl" alt="">
                     </a>
                     <div class="content">
                         <h3 class="title">
-                            <a asp-action="Details" asp-controller="Product">
+                            <a asp-action="Details" asp-controller="Product" asp-route-id="@product.Id">
                                 @product.Name
                             </a>
                         </h3>
                         <p class="price"><span class="qty">@product.Count ×</span> £@Math.Round(product.Price - (product.Price * (decimal)product.Discount/100)*product.Count, 2)</p>
-                        <button class="cross-btn"><i class="fas fa-times"></i></button>
                     </div>
                 }
             </div>

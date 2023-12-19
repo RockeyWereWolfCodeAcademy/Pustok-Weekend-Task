@@ -6,7 +6,7 @@
 @section scripts {
    <script>
         $("#add-basket").on("click", function (ev) {
-            ev.preventDefault()
+            ev.preventDefault();
             fetch($(this).attr("href"))
                 .then(res => {
                     if (res.ok) {
@@ -116,29 +116,6 @@ Home Slider Tab
     <h2 class="sr-only">Home Tab Slider Section</h2>
     <div class="container">
         <div class="sb-custom-tab">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="shop-tab" data-toggle="tab" href="#shop" role="tab"
-                       aria-controls="shop" aria-selected="true">
-                        Featured Products
-                    </a>
-                    <span class="arrow-icon"></span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="men-tab" data-toggle="tab" href="#men" role="tab"
-                       aria-controls="men" aria-selected="true">
-                        New Arrivals
-                    </a>
-                    <span class="arrow-icon"></span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="woman-tab" data-toggle="tab" href="#woman" role="tab"
-                       aria-controls="woman" aria-selected="false">
-                        Most view products
-                    </a>
-                    <span class="arrow-icon"></span>
-                </li>
-            </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane show active" id="shop" role="tabpanel" aria-labelledby="shop-tab">
                     <div class="product-slider multiple-row  slider-border-multiple-row  sb-slick-slider"

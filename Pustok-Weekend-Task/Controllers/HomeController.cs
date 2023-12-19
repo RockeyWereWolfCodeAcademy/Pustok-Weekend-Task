@@ -41,5 +41,9 @@ namespace Pustok_Weekend_Task.Controllers
             }).ToListAsync();
             return View(models);
         }
-    }
+		public IActionResult AccessDenied()
+		{
+			return View();
+		}
+	}
 }
