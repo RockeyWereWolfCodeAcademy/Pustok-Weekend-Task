@@ -14,7 +14,7 @@
             <a class="btn btn-outline-success" asp-action="Create" asp-controller="AdminProduct">Create</a>
         </div>
         <div class="col-sm-3">
-            <label style="white-space:nowrap">
+            @* <label style="white-space:nowrap">
                 Show
                 <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
                     <option value="10">10</option>
@@ -22,7 +22,7 @@
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select> entries
-            </label>
+            </label> *@
         </div>
     </div>
     <div class="row">
@@ -51,8 +51,8 @@
                             <td>@product.Id</td>
                             <td>@product.Name</td>
                             <td>
-                                <a data-toggle="popover-hover" data-img="@product.ActiveImageUrl">Show</a>
-                                @* <img data-toggle="popover" data content="This is a popover" src="@product.ActiveImageUrl" width="250px" height="250px" /> *@
+                               @*  <a data-toggle="popover-hover" data-img="@product.ActiveImageUrl">Show</a> *@
+                                <img src="@product.ActiveImageUrl" width="100" height="100" />
                             </td>
                             <td>@product.ExTax</td>
                             <td>@(product.IsAvailable == true ? "yes" : "no")</td>

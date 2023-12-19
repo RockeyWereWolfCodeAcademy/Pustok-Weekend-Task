@@ -11,12 +11,12 @@
 @section scripts{
     
     <script>
-        $('[data-toggle="popover-hover"]').popover({
-            html: true,
-            trigger: 'hover',
-            placement: 'bottom',
-            content: function () { return '<img src="' + $(this).data('img') + '"  class="img-fluid"/>'; }
-        })
+        // $('[data-toggle="popover-hover"]').popover({
+        //     html: true,
+        //     trigger: 'hover',
+        //     placement: 'bottom',
+        //     content: function () { return '<img src="' + $(this).data('img') + '"  class="img-fluid"/>'; }
+        // })
         $(".tab-pane").on("click", "#prod-pag a", function (ev) {
             ev.preventDefault();
             fetch($(this).attr("href"))
