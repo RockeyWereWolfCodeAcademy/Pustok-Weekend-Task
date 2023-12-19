@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Pustok_Weekend_Task.Models;
 
 namespace Pustok_Weekend_Task.Contexts
 {
-    public class PustokDbContext : DbContext
+    public class PustokDbContext : IdentityDbContext
     {
         public PustokDbContext(DbContextOptions<PustokDbContext> options) : base(options) { }
         public DbSet<Slider> Sliders { get; set; }
@@ -17,6 +17,7 @@ namespace Pustok_Weekend_Task.Contexts
         public DbSet<ProductTag> ProductTags { get; set; }
         public DbSet<BlogTag> BlogTags { get; set; }
         public DbSet<Setting> Settings { get; set; }
+        public DbSet<AppUser> AppUsers {  get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Setting>()

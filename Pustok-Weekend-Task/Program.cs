@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Pustok_Weekend_Task.Contexts;
 using Pustok_Weekend_Task.Helpers;
+using Pustok_Weekend_Task.Models;
 
 namespace Pustok_Weekend_Task
 {
@@ -16,6 +18,30 @@ namespace Pustok_Weekend_Task
             builder.Services.AddDbContext<PustokDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration["ConnectionStrings:MSSql"]);
+            }).AddIdentity<AppUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = false;
+                options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz0123456789._";
+                options.Password.RequireNonAlphanumeric = false;
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+            }).AddDefaultTokenProviders().AddEntityFrameworkStores<PustokDbContext>();
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = new PathString("/Auth/Login");
+                options.LogoutPath = new PathString("/Auth/Logout");
+                options.AccessDeniedPath = new PathString("/Home/AccessDenied");
+
+                options.Cookie = new()
+                {
+                    Name = "IdentityCookie",
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Lax,
+                    SecurePolicy = CookieSecurePolicy.Always
+                };
+                options.SlidingExpiration = true;
+                options.ExpireTimeSpan = TimeSpan.FromDays(30);
             });
 
             builder.Services.AddScoped<LayoutService>();
