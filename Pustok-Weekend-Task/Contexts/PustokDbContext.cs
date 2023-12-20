@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Pustok_Weekend_Task.Helpers;
 using Pustok_Weekend_Task.Models;
 
 namespace Pustok_Weekend_Task.Contexts
