@@ -53,7 +53,7 @@ namespace Pustok_Weekend_Task.Controllers
         public async Task<IActionResult> AddToBasket(int? id)
         {
             if (id == null || id == 0)  BadRequest();
-            if (!_context.Products.Any(p => p.Id == id)) NotFound();
+            if (!await _context.Products.AnyAsync(p => p.Id == id)) NotFound();
             var basket = JsonConvert.DeserializeObject<List<BasketProductAndCountVM>>(HttpContext.Request.Cookies["basket"]??"[]");
             var existItem = basket.Find(b => b.Id == id);
             if (existItem == null)

@@ -5,7 +5,7 @@
 
 @section scripts {
    <script>
-        $("#add-basket").on("click", function (ev) {
+        $(".hover-btns").on("click", "#add-basket", function (ev) {
             ev.preventDefault();
             fetch($(this).attr("href"))
                 .then(res => {
@@ -226,7 +226,7 @@ Deal of the day
                                     <img src="@product.ActiveImgUrl" alt="">
                                 </a>
                                 <div class="hover-btns">
-                                    <a href="cart.html" class="single-btn">
+                                    <a id="add-basket" asp-action="AddToBasket" asp-controller="Product" asp-route-id="@product.Id" class="single-btn">
                                         <i class="fas fa-shopping-basket"></i>
                                     </a>
                                     <a href="wishlist.html" class="single-btn">
@@ -579,7 +579,7 @@ ARTS & PHOTOGRAPHY BOOKS
                                         <img src="@product.ActiveImgUrl" alt="">
                                     </a>
                                     <div class="hover-btns">
-                                        <a href="cart.html" class="single-btn">
+                                        <a id="add-basket" asp-action="AddToBasket" asp-controller="Product" asp-route-id="@product.Id" class="single-btn">
                                             <i class="fas fa-shopping-basket"></i>
                                         </a>
                                         <a href="wishlist.html" class="single-btn">
