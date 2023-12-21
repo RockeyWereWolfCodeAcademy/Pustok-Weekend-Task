@@ -362,3 +362,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+# Ignore app settings of ASP.NET project
+Pustok-Weekend-Task/appsettings.json
