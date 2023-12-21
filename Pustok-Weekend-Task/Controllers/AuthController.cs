@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Pustok_Weekend_Task.ExternalServices.Interfaces;
 using Pustok_Weekend_Task.Helpers.Enums;
 using Pustok_Weekend_Task.Models;
 using Pustok_Weekend_Task.ViewModels.AuthVM;
@@ -12,14 +13,22 @@ namespace Pustok_Weekend_Task.Controllers
         SignInManager<AppUser> _signInManager { get; }
         UserManager<AppUser> _userManager { get; }
         RoleManager<IdentityRole> _roleManager { get; }
+        IEmailService _emailService { get; }
 
-        public AuthController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AuthController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IEmailService emailService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
+            _emailService = emailService;
         }
-        public IActionResult Register()
+
+		public IActionResult SendMail()
+		{
+            _emailService.Send("mi71k9d7p@code.edu.az", "Test", "test mail");
+			return Ok();
+        }
+		public IActionResult Register()
         {
             return View();
         }
@@ -51,7 +60,10 @@ namespace Pustok_Weekend_Task.Controllers
 				ModelState.AddModelError("", "Something went wrong. Please contact admin");
 				return View(vm);
 			}
-			return RedirectToAction("Index", "Home");
+
+			//SendEmail();
+
+            return RedirectToAction("Index", "Home");
         }
 		public IActionResult Login()
 		{

@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Pustok_Weekend_Task.Contexts;
+using Pustok_Weekend_Task.ExternalServices.Implements;
+using Pustok_Weekend_Task.ExternalServices.Interfaces;
 using Pustok_Weekend_Task.Helpers;
 using Pustok_Weekend_Task.Models;
 
@@ -45,6 +47,8 @@ namespace Pustok_Weekend_Task
             });
 
             builder.Services.AddScoped<LayoutService>();
+
+            builder.Services.AddScoped<IEmailService, EmailService>();
 
             var app = builder.Build();
 
