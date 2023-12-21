@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Pustok_Weekend_Task.ExternalServices.Interfaces;
+using Pustok_Weekend_Task.Helpers;
 using Pustok_Weekend_Task.Helpers.Enums;
 using Pustok_Weekend_Task.Models;
 using Pustok_Weekend_Task.ViewModels.AuthVM;
@@ -23,7 +24,7 @@ namespace Pustok_Weekend_Task.Controllers
             _emailService = emailService;
         }
 
-		public IActionResult SendMail()
+		public IActionResult SendEmail()
 		{
             _emailService.Send("mi71k9d7p@code.edu.az", "Test", "test mail");
 			return Ok();
@@ -50,7 +51,7 @@ namespace Pustok_Weekend_Task.Controllers
             {
                 foreach (var error in result.Errors)
                 {
-					ModelState.AddModelError("", error.Description);
+					ModelState.AddModelError("", error.Description + "(only small letters)");
 				}
 				return View(vm);
 			}
@@ -61,8 +62,10 @@ namespace Pustok_Weekend_Task.Controllers
 				return View(vm);
 			}
 
-			//SendEmail();
-
+			using StreamReader streamReader = new StreamReader(Path.Combine(PathConstants.RootPath, "emailtemplatewelcome.html"));
+			string welcomeMessageContent = streamReader.ReadToEnd();
+			welcomeMessageContent = welcomeMessageContent.Replace("[[[username]]]", user.UserName);
+			_emailService.Send(user.Email, "Welcome Message", welcomeMessageContent);
             return RedirectToAction("Index", "Home");
         }
 		public IActionResult Login()
