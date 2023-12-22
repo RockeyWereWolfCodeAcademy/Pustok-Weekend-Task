@@ -2,91 +2,91 @@
 
 
 <div class="container">
-	<div id="records" class="shop-product-wrap grid with-pagination row space-db--30 shop-border">
+	<div id="records" class="shop-product-wrap grid-four with-pagination row space-db--30 shop-border">
 		@foreach (var product in Model)
 		{
-		<div class="col">
-			<div class="product-card">
-				<div class="product-grid-content">
-					<div class="product-header">
-						<a href="#" class="author">
-							@product.AuthorName
-						</a>
-						<h3><a href="product-details.html">@product.Name</a></h3>
-					</div>
-					<div class="product-card--body">
-						<div class="card-image">
-							<img src="image/products/product-2.jpg" alt="">
-							<div class="hover-contents">
-								<a href="product-details.html" class="hover-image">
-									<img src="~/@product.ActiveImgUrl" alt="">
-								</a>
-								<div class="hover-btns">
-									<a href="cart.html" class="single-btn">
-										<i class="fas fa-shopping-basket"></i>
-									</a>
-									<a href="wishlist.html" class="single-btn">
-										<i class="fas fa-heart"></i>
-									</a>
-									<a href="compare.html" class="single-btn">
-										<i class="fas fa-random"></i>
-									</a>
-									<a href="#" data-toggle="modal" data-target="#quickModal"
-										class="single-btn">
-										<i class="fas fa-eye"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-						<div class="price-block">
-							<span class="price">£@Math.Round(product.SellPrice - (product.SellPrice * (decimal)product.Discount/100), 2)</span>
-							<del class="price-old">@Math.Round(product.SellPrice, 2)</del>
-							<span class="price-discount">@product.Discount %</span>
-						</div>
-					</div>
-				</div>
-				<div class="product-list-content">
-					<div class="card-image">
-						<img src="~/@product.ActiveImgUrl" alt="">
-					</div>
-					<div class="product-card--body">
+			<div class="col-lg-4 col-sm-6">
+				<div class="product-card">
+					<div class="product-grid-content">
 						<div class="product-header">
 							<a href="#" class="author">
 								@product.AuthorName
 							</a>
-							<h3>
-								<a href="product-details.html" tabindex="0">
-									@product.Name
+							<h3><a id="add-basket" asp-action="AddToBasket" asp-controller="Product" asp-route-id="@product.Id">@product.Name</a></h3>
+						</div>
+						<div class="product-card--body">
+							<div class="card-image">
+								<img src="~/@product.ActiveImgUrl" alt="">
+								<div class="hover-contents">
+									<a id="add-basket" asp-action="AddToBasket" asp-controller="Product" asp-route-id="@product.Id" class="hover-image">
+										<img src="@product.ActiveImgUrl" alt="">
+									</a>
+									<div class="hover-btns">
+										<a id="add-basket" asp-action="AddToBasket" asp-controller="Product" asp-route-id="@product.Id" class="single-btn">
+											<i class="fas fa-shopping-basket"></i>
+										</a>
+										<a href="wishlist.html" class="single-btn">
+											<i class="fas fa-heart"></i>
+										</a>
+										<a href="compare.html" class="single-btn">
+											<i class="fas fa-random"></i>
+										</a>
+										<a href="#" data-toggle="modal" data-target="#quickModal"
+										   class="single-btn">
+											<i class="fas fa-eye"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="price-block">
+								<span class="price">£@Math.Round(product.SellPrice - (product.SellPrice * (decimal)product.Discount/100), 2)</span>
+								<del class="price-old">@Math.Round(product.SellPrice, 2)</del>
+								<span class="price-discount">@product.Discount %</span>
+							</div>
+						</div>
+					</div>
+					<div class="product-list-content">
+						<div class="card-image">
+							<img src="~/@product.ActiveImgUrl" alt="">
+						</div>
+						<div class="product-card--body">
+							<div class="product-header">
+								<a href="#" class="author">
+									@product.AuthorName
 								</a>
-							</h3>
-						</div>
-						<article>
-							<h2 class="sr-only">Card List Article</h2>
-							<p>
-								@product.Name
-							</p>
-						</article>
-						<div class="price-block">
-							<span class="price">£@Math.Round(product.SellPrice - (product.SellPrice * (decimal)product.Discount/100), 2)</span>
-							<del class="price-old">@Math.Round(product.SellPrice, 2)</del>
-							<span class="price-discount">@product.Discount %</span>
-						</div>
-						<div class="rating-block">
-							<span class="fas fa-star star_on"></span>
-							<span class="fas fa-star star_on"></span>
-							<span class="fas fa-star star_on"></span>
-							<span class="fas fa-star star_on"></span>
-							<span class="fas fa-star "></span>
-						</div>
-						<div class="btn-block">
-							<a href="#" class="btn btn-outlined">Add To Cart</a>
-							<a href="#" class="card-link"><i class="fas fa-heart"></i> Add To Wishlist</a>
-							<a href="#" class="card-link"><i class="fas fa-random"></i> Add To Cart</a>
+								<h3>
+									<a id="add-basket" asp-action="AddToBasket" asp-controller="Product" asp-route-id="@product.Id" tabindex="0">
+										@product.Name
+									</a>
+								</h3>
+							</div>
+							<article>
+								<h2 class="sr-only">Card List Article</h2>
+								<p>
+									@product.About
+								</p>
+							</article>
+							<div class="price-block">
+								<span class="price">£@Math.Round(product.SellPrice - (product.SellPrice * (decimal)product.Discount/100), 2)</span>
+								<del class="price-old">@Math.Round(product.SellPrice, 2)</del>
+								<span class="price-discount">@product.Discount %</span>
+							</div>
+							<div class="rating-block">
+								<span class="fas fa-star star_on"></span>
+								<span class="fas fa-star star_on"></span>
+								<span class="fas fa-star star_on"></span>
+								<span class="fas fa-star star_on"></span>
+								<span class="fas fa-star "></span>
+							</div>
+							<div class="btn-block">
+								<a id="add-basket" asp-action="AddToBasket" asp-controller="Product" asp-route-id="@product.Id" class="btn btn-outlined">Add To Cart</a>
+								<a href="#" class="card-link"><i class="fas fa-heart"></i> Add To Wishlist</a>
+								<a href="#" class="card-link"><i class="fas fa-random"></i> Add To Cart</a>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 		}
 	</div>
 </div>

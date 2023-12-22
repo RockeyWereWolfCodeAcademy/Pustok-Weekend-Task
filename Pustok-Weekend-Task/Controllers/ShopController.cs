@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Pustok_Weekend_Task.Contexts;
+using Pustok_Weekend_Task.Models;
 using Pustok_Weekend_Task.ViewModels.ProductVM;
 
 namespace Pustok_Weekend_Task.Controllers
@@ -27,6 +28,8 @@ namespace Pustok_Weekend_Task.Controllers
 				Name = p.Name,
 				ActiveImgUrl = p.ActiveImgUrl,
 				SellPrice = p.SellPrice,
+				AuthorName = p.Author.Name + " " + p.Author.Surname,
+				About = p.About,
 			}).ToListAsync();
 			return View(items);
 		}
@@ -40,6 +43,8 @@ namespace Pustok_Weekend_Task.Controllers
 				Name = p.Name,
 				ActiveImgUrl = p.ActiveImgUrl,
 				SellPrice = p.SellPrice,
+				AuthorName = p.Author.Name + " " + p.Author.Surname,
+				About = p.About,
 			}).ToListAsync();
 			//int totalCount = await _context.Products.CountAsync(x => !x.IsDeleted);
 			return PartialView("_ShopProductPartial", items);

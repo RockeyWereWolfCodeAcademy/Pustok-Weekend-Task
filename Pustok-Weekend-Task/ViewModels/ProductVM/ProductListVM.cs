@@ -9,5 +9,6 @@
         public decimal SellPrice { get; set; }
         public float Discount { get; set; }
         public string Category { get; set; }
+        public string? About { get; set; }
     }
 }
